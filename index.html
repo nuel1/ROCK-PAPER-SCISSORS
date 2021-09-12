@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="Icon" href="img.png" sizes="16X16" />
+    <title>Rock, Paper, Scissors</title>
+  </head>
+  <body>
+    <div class="game-box">
+      <div class="intro-container">
+        <div class="sprite-container">
+          <div class="sprite-col-1 bg-box">
+            <div class="sprite--name">
+              <h3>Elliot</h3>
+            </div>
+            <div class="sprite--img-box">
+              <img src="elliot.png" />
+            </div>
+            <div class="btn-wrapper" id="sprite-one--selected">
+              <button class="btn--select">Select</button>
+            </div>
+          </div>
+          <div class="sprite-col-2 bg-box">
+            <div class="sprite--name">
+              <h3>Jenny</h3>
+            </div>
+            <div class="sprite--img-box">
+              <img src="jenny.png" />
+            </div>
+            <div class="btn-wrapper" id="sprite-two--selected">
+              <button class="btn--select">Select</button>
+            </div>
+          </div>
+        </div>
+        <span>Choose a player</span>
+      </div>
+
+      <div class="model-box d--none">
+        <div class="card--player-one card-one--hidden card--js">
+          <div class="sprite--img-box">
+            <img src="" />
+          </div>
+          <div class="sprite--name">
+            <h3></h3>
+          </div>
+          <span>You</span>
+        </div>
+        <p class="fadeOut--spin-box">VS</p>
+        <div class="card--player-two card-two--hidden card--js">
+          <div class="sprite--img-box">
+            <img src="" />
+          </div>
+          <div class="sprite--name">
+            <h3></h3>
+          </div>
+          <span>Computer</span>
+        </div>
+      </div>
+
+      <div class="play-box d--none">
+        <section class="play-box--game-field">
+          <div class="box-wrapper--flex">
+            <div class="col-1 flex-item">
+              <h3 class="flex-item--title" id="type--one">ROCK</h3>
+              <div class="flex-item--img-box">
+                <img src="rock.png" id="img" />
+                <img src="rock.png" id="rock" class="selectable--true" />
+              </div>
+              <div class="state selectable--js">
+                <span id="span_type-one">Select</span>
+              </div>
+            </div>
+
+            <div class="col-2 flex-item">
+              <h3 class="flex-item--title" id="type--two">PAPER</h3>
+              <div class="flex-item--img-box">
+                <img src="paper.png" id="img" />
+                <img src="paper.png" id="paper" class="selectable--true" />
+              </div>
+              <div class="state selectable--js">
+                <span id="span_type-two">Select</span>
+              </div>
+            </div>
+
+            <div class="col-3 flex-item">
+              <h3 class="flex-item--title" id="type--three">SCISSORS</h3>
+              <div class="flex-item--img-box">
+                <img src="scissors.png" id="img" />
+                <img
+                  src="scissors.png"
+                  id="scissors"
+                  class="selectable--true"
+                />
+              </div>
+              <div class="state selectable--js">
+                <span>Select</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="loader hide">
+            <div class="spinner-box"></div>
+            <span class="loader--mssg"> Waiting for Computer... </span>
+          </div>
+        </section>
+        <section class="play-box--score-field">
+          <h2 class="score-field--title">Scores</h2>
+          <div class="score-box--flex">
+            <div class="col-1 flex-item">
+              <h3 class="flex-item--title">You</h3>
+              <ul class="counter-box">
+                <li class="counter show">0</li>
+              </ul>
+            </div>
+
+            <div class="col-2 flex-item">
+              <h4 class="flex-item--title">Computer</h4>
+              <ul class="counter-box">
+                <li class="counter show">0</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="comp-mode comp-mode--off"></div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
