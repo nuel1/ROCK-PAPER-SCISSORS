@@ -33,6 +33,7 @@
     return function (player_id) {
       setup.img_Containers[n].setAttribute("src", player_id["img-src"]);
       setup.playername_Headers[n].textContent = `${player_id["name"]}`;
+      return player_id;
     };
   }
 
@@ -83,12 +84,16 @@
     }, 3500);
   }
 
+  // Collecting players info
+  let userPlayerInfo;
+  let computerPlayerInfo;
+
   function playerSelected(e) {
-    playersId([]).forEach(item => {
-      if (e.target.parentNode.getAttribute("id") === item.id) {
-        USER(item);
+    playersId([]).forEach(player => {
+      if (e.target.parentNode.getAttribute("id") === player.id) {
+        userPlayerInfo = USER(player);
       } else {
-        COMPUTER(item);
+        computerPlayerInfo = COMPUTER(player);
       }
     });
 
@@ -121,16 +126,9 @@
 
   function computerSelect(e) {
     const selectableBoxes = [...document.querySelectorAll("#img")];
-    const filterdBoxes = selectableBoxes.filter(img => e !== img);
-    const randomSelection = Math.floor(Math.random() * filterdBoxes.length);
-
-    if (randomSelection < 0) {
-      let selected = filterdBoxes[0];
-      return selected;
-    } else {
-      let selected = filterdBoxes[randomSelection];
-      return selected;
-    }
+    const randomSelection = Math.floor(Math.random() * selectableBoxes.length);
+    let selected = selectableBoxes[randomSelection];
+    return selected;
   }
 
   // ******************
@@ -259,9 +257,13 @@
     }
 
     function checkSelectedBoxes(array) {
-      array[0][s(user_select)][s(computer_select)]
-        ? userScore(userScoreCount)
-        : computerScore(computerScoreCount);
+      const userSelected = s(user_select);
+      const computerSelected = s(computer_select);
+      if (userSelected !== computerSelected) {
+        array[0][userSelected][computerSelected]
+          ? userScore(userScoreCount)
+          : computerScore(computerScoreCount);
+      }
     }
     checkSelectedBoxes(entities);
   }
@@ -287,12 +289,101 @@
       animation__smoothImgDrop().computerSelect.classToggle.moveLeft();
   }
 
-  function reset() {
-    function scoreReset() {
-      userScoreCount = scores(0);
-      computerScoreCount = scores(0);
+  function resetGameScores() {
+    userScoreCount = scores(0);
+    computerScoreCount = scores(0);
+  }
+
+  const gameCurtain = {
+    curtain: document.querySelector(".curtain"),
+    open: function () {
+      this.curtain.style.display = "flex";
+    },
+    close: function () {
+      this.curtain.style.display = "none";
+    },
+  };
+
+  function endGame(userScore, computerScore) {
+    let rank;
+    const user_s = Number.parseInt(userScore);
+    const computer_s = Number.parseInt(computerScore);
+    if (user_s === 2 || computer_s === 2) {
+      gameCurtain.open();
+      if (user_s > computer_s) {
+        rank = endScores([
+          ["Your Score: ", user_s],
+          ["Computer Score: ", computer_s],
+        ]);
+        rank.showScoreDiff(1);
+        rank.showScoreDiff(0);
+        userWin(user_s);
+        currentWinner(userPlayerInfo);
+      } else {
+        rank = endScores([
+          ["Computer Score: ", computer_s],
+          ["Your Score: ", user_s],
+        ]);
+        rank.showScoreDiff(1);
+        rank.showScoreDiff(0);
+        userLose(user_s);
+        currentWinner(computerPlayerInfo);
+      }
+      gameCurtain.open();
+      resetGameScores();
     }
-    scoreReset();
+  }
+
+  function currentWinner(info) {
+    const img_avater = document.querySelector(".avater-container img");
+    const name_avater = document.querySelector(".avater-container span");
+    img_avater.setAttribute("src", info["img-src"]);
+    name_avater.textContent = `${info["name"]}`;
+  }
+
+  // If user loses
+  function userLose(score) {
+    const img_emoji = document.querySelector(".state__emoji img");
+    if (score < 6) img_emoji.setAttribute("src", "img/disappointed.gif");
+    else img_emoji.setAttribute("src", "img/sad.gif");
+  }
+
+  function userWin() {
+    const img_emoji = document.querySelector(".state__emoji img");
+    img_emoji.setAttribute("src", "img/blushing.gif");
+  }
+
+  function endScores(data) {
+    let title, playerScore;
+    const scoreInfo = {
+      player: null,
+      score: null,
+      showScoreDiff(scoreRank) {
+        if (scoreRank > 0) {
+          title = document.querySelector(".top-score span");
+          playerScore = document.querySelector(".top-score b");
+          console.log(playerScore);
+          this.player = data[0][0];
+          this.score = data[0][1];
+          title.textContent = `${this.player}`;
+          playerScore.textContent = `${this.score}`;
+          title.append(playerScore);
+        } else {
+          title = document.querySelector(".low-score span");
+          playerScore = document.querySelector(".low-score b");
+          this.player = data[1][0];
+          this.score = data[1][1];
+          title.textContent = `${this.player}`;
+          playerScore.textContent = `${this.score}`;
+          title.append(playerScore);
+        }
+      },
+    };
+    return scoreInfo;
+  }
+
+  function startNewGame() {
+    gameCurtain.close();
   }
 
   function resetMoves() {
@@ -335,9 +426,18 @@
     selectableBoxes.forEach(el => {
       el.addEventListener("click", e => {
         runGame(e.target, userSelect(e));
+        setTimeout(function () {
+          const playerCurrScore =
+            document.querySelectorAll(".counter")[0].textContent;
+          const computerCurrScore =
+            document.querySelectorAll(".counter")[1].textContent;
+          endGame(playerCurrScore, computerCurrScore);
+        }, 1000);
       });
     });
   }
 
   startGame();
+  const btn_ReloadGame = document.querySelector(".btn--reload a");
+  btn_ReloadGame.addEventListener("click", startNewGame);
 })();
