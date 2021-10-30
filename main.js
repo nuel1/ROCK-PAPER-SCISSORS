@@ -5,12 +5,12 @@
     const playerOne = {
       id: "sprite-one--selected",
       name: "Elliot",
-      "img-src": "elliot.png",
+      "img-src": "img/elliot.png",
     };
     const playerTwo = {
       id: "sprite-two--selected",
       name: "Jenny",
-      "img-src": "jenny.png",
+      "img-src": "img/jenny.png",
     };
 
     object.push(playerOne, playerTwo);
