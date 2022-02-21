@@ -308,7 +308,7 @@
     let rank;
     const user_s = Number.parseInt(userScore);
     const computer_s = Number.parseInt(computerScore);
-    if (user_s === 2 || computer_s === 2) {
+    if (user_s === 10 || computer_s === 10) {
       gameCurtain.open();
       if (user_s > computer_s) {
         rank = endScores([
